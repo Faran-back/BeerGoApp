@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Mail\DeleteAccount;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -102,13 +105,34 @@ class UserController extends Controller
         }
     }
     
-    public function destroy(User $user){
+    public function request_delete_account(Request $request, User $user){
+
         try{
-            $user->delete();
+            $request->validate([
+                'password' => 'required'
+            ]);
+
+            if(!Hash::check($request->password, $user->password)){
+                return response()->json([
+                    'status' => 401,
+                    'message' => 'Incorrect Password'
+            ]);
+
+            }
+
+            $otp = rand(1000, 9999);
+
+            $user->update([
+                'otp' => $otp
+            ]);
+
+            Mail::to($user->email)->send(new DeleteAccount($user));
+
             return response()->json([
                 'status' => 200,
-                'message' => 'User Deleted Successfully',
+                'message' => 'OTP sent'
             ]);
+            
         }catch(Exception $e){
             return response()->json([
                 'status' => 500,
@@ -116,4 +140,34 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function destroy(Request $request, User $user){
+
+        try{
+
+        $request->validate([
+            'otp' => 'required'
+        ]);
+
+        if($request->otp !== $user->otp){
+            return response()->json([
+                'status' => 401,
+                'message' => 'Incorrect OTP code'
+            ]);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Account Deleted Successfully'
+        ]); 
+
+        }catch(Exception $e){
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }  
 }

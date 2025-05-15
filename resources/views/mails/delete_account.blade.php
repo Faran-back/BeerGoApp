@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Verify Your Account</title>
+    <title>Delete Account OTP</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -36,8 +36,8 @@
 </head>
 <body>
     <div class="container">
-        <h2>Hello {{ $user->email }},</h2>
-        <p>Thank you for registering with <strong>BeerGoApp</strong>.</p>
+        <h2>Hello {{ $user->full_name ?? $user->email }},</h2>
+        <p>We received a Account Deletion request from your email.</p>
         <p>Please verify your account using the OTP below:</p>
 
         <div class="otp">

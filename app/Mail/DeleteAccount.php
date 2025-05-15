@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OTPMail extends Mailable
+class DeleteAccount extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,7 +18,6 @@ class OTPMail extends Mailable
      */
 
      public $user;
-
     public function __construct($user)
     {
         $this->user = $user;
@@ -30,7 +29,7 @@ class OTPMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Thankyou!, for registering to BeerGoApp',
+            subject: 'Delete Account',
         );
     }
 
@@ -40,7 +39,7 @@ class OTPMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.verify_email',
+            view: 'mails.delete_account',
             with: [
                 'user' => $this->user
             ]

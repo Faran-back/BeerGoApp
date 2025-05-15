@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OTPMail extends Mailable
+class PasswordReset extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,7 +17,7 @@ class OTPMail extends Mailable
      * Create a new message instance.
      */
 
-     public $user;
+    public $user;
 
     public function __construct($user)
     {
@@ -30,7 +30,7 @@ class OTPMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Thankyou!, for registering to BeerGoApp',
+            subject: 'Password Reset',
         );
     }
 
@@ -40,8 +40,8 @@ class OTPMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.verify_email',
-            with: [
+            view: 'mails.password_reset',
+            with:[
                 'user' => $this->user
             ]
         );

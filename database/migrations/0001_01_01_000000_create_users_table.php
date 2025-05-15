@@ -16,9 +16,12 @@ return new class extends Migration
             $table->string('full_name')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('gender')->nullable();
+            $table->string('google_id')->nullable();
+            $table->string('apple_id')->nullable();
             $table->string('date_of_birth')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->string('access_token')->nullable();
             $table->string('otp')->nullable();
             $table->string('profile_picture')->nullable();
             $table->rememberToken();

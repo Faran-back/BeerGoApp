@@ -26,7 +26,10 @@ class User extends Authenticatable
         'full_name',
         'gender',
         'date_of_birth',
-        'profile_picture'
+        'profile_picture',
+        'google_id',
+        'apple_id',
+        'email_verified_at',
     ];
 
     /**
